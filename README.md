@@ -8,7 +8,7 @@ Moodle block developed for Universidade Aberta (UAb) to bridge the gap between M
 *   **For Teachers, Reviewers, and Managers:** It offers a dashboard to monitor the progress of grading in WISEflow and provides a one-click function to finalize the assessment period, which synchronizes grades and makes them available to students.
 *   **For Students:** It presents an integrated and interactive "learning card" carousel, displaying grades and direct links to electronic submission certificates for their course units, consolidating information from both Moodle and WISEflow.
 
----
+This block was originally developed for [Universidade Aberta (UAb)](https://portal.uab.pt/).
 
 ## Features
 

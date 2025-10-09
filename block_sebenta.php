@@ -115,7 +115,7 @@ class block_sebenta extends block_base
 
         global $CFG, $USER;
 
-        require_once('./fetch_flows.php');
+        require_once('fetch_flows.php');
         require_once($CFG->dirroot . '/blocks/lanca_pauta/block_lanca_pauta.php');
 
         date_default_timezone_set('Europe/Lisbon');

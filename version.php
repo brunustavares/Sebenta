@@ -9,10 +9,10 @@
  * @package    block_sebenta
  * @author     Bruno Tavares <brunustavares@gmail.com>
  * @link       https://www.linkedin.com/in/brunomastavares/
- * @copyright  Copyright (C) 2023-2025 Bruno Tavares
+ * @copyright  Copyright (C) 2023-present Bruno Tavares
  * @license    GNU General Public License v3 or later
  *             https://www.gnu.org/licenses/gpl-3.0.html
- * @version    2025021305
+ * @version    2026021202
  * @date       2023-03-21
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_sebenta';
-$plugin->release = '0.3.0';
-$plugin->version = 2023032409;
+$plugin->release = '1.1.0';
+$plugin->version = 2026021202;
 $plugin->requires = 2022041905;
-$plugin->maturity = MATURITY_RC;
+$plugin->maturity = MATURITY_STABLE;

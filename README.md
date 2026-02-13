@@ -49,31 +49,37 @@ The `Sebenta` block is composed of several key files that work together to deliv
 
 *   **`block_sebenta.php`**: The main Moodle block class.
     *   It handles all server-side logic, including role detection, permission checks, and data fetching.
-    *   It dynamically builds the HTML content for the block based on the user's role.
-    *   For the teacher view, it fetches flow data from an external XML source (via `fetch_flows.php`) and then makes multiple cURL requests to the WISEflow API to get real-time data for each flow.
+    *   It dynamically builds the initial HTML structure and serves as the endpoint for asynchronous data requests.
+    *   **Optimization**: Supports paginated data retrieval (`get_flows` action) to efficiently handle large numbers of flows without overloading the initial page load.
     *   For the student view, it queries the Moodle database and interacts with the `block_lanca_pauta` to aggregate course, grade, and certificate data.
 
 *   **`wf_endpoints.php`**: A dedicated endpoint for handling AJAX requests from the block's frontend.
     *   It currently implements the `endflowmarking` action.
     *   It receives the `flowid`, authentication token, and API URL from the client-side JavaScript.
     *   It securely performs a `PATCH` request to the WISEflow API to update the flow's marking end date.
+    *   **Optimization**: Uses centralized cURL parameter configuration for consistent and secure API communication.
 
 *   **`fetch_flows.php`**: Contains helper functions for fetching data from external sources.
     *   `getbdintdata()`: Connects to an intermediate database/webservice to retrieve the list of WISEflow flows relevant to the user.
     *   `checkwftoken()`: Manages the WISEflow API authentication token, including fetching a new one if the current one is expired or missing.
+    *   **Optimization**: Designed to work with the paginated requests from the frontend, fetching only the necessary subset of flow data per request.
 
-*   **`settings.php`**: (Not provided, but inferred) Defines the configuration settings for the block, likely including API base URLs, credentials, and other administrative options accessible through Moodle's block settings page.
+*   **`settings.php`**: Defines the configuration settings for the block, likely including API base URLs, credentials, and other administrative options accessible through Moodle's block settings page.
 
 ### Frontend (JavaScript & CSS)
 
 *   **`script.js`**: Contains all client-side JavaScript logic.
-    *   **Teacher/Manager Functions:**
-        *   `setFlowInfo()`: Populates the confirmation modal with the correct flow ID and title.
+    *   **Teacher/Manager Functions (`initTeacherFlows`):**
+        *   **Asynchronous Loading**: Uses the Fetch API to load flow data in batches (pagination), significantly improving initial page load time.
+        *   **Client-Side Caching**: Implements `sessionStorage` caching (2-minute TTL) to store loaded flows and status, reducing server load and API calls on page refreshes.
+        *   **Dynamic UI**: Handles "Load More" functionality, loading spinners, and real-time status updates.
         *   `endflowmarking()`: Handles the AJAX `POST` request to `wf_endpoints.php` to finalize an assessment, passing the necessary data. It also updates the UI to show a confirmation message and reloads the page.
-    *   **Student Functions:**
-        *   Manages the student's learning card carousel, including initialization, navigation controls, and the infinite scrolling effect.
+    *   **Student Functions (`initStudentCarousel`):**
+        *   **Responsive Carousel**: Manages the student's learning card carousel with dynamic slide sizing based on container width.
+        *   **Enhanced Navigation**: Supports touch/pointer swipe gestures and keyboard navigation (Arrow keys).
+        *   **State Persistence**: Caches the carousel content and current slide index in `sessionStorage` for a seamless user experience across page reloads.
 
-*   **`style.css`**: (Not provided, but inferred) Contains all the CSS rules for styling the block's components, including:
+*   **`style.css`**: Contains all the CSS rules for styling the block's components, including:
     *   The layout and appearance of the progress bars for the teacher view.
     *   The design of the learning cards, tables, and navigation buttons for the student carousel.
     *   The styling for the confirmation modal.
@@ -101,7 +107,7 @@ The `Sebenta` block is composed of several key files that work together to deliv
 **Author**: Bruno Tavares  
 **Contact**: [brunustavares@gmail.com](mailto:brunustavares@gmail.com)  
 **LinkedIn**: [https://www.linkedin.com/in/brunomastavares/](https://www.linkedin.com/in/brunomastavares/)  
-**Copyright**: 2023-2025 Bruno Tavares  
+**Copyright**: 2023-present Bruno Tavares  
 **License**: GNU GPL v3 or later  
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

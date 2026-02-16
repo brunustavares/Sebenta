@@ -168,6 +168,19 @@ function sebenta_wf_get_json($url, array $curloptbase)
  */
 function sebenta_render_teacher_flow_row(array $flow, $assess)
 {
+    global $wf_base_url;
+
+    static $authchainencoded = null;
+    static $wfurlencoded = null;
+
+    if ($authchainencoded === null) {
+        $authchainencoded = base64_encode(checkwftoken());
+    }
+
+    if ($wfurlencoded === null) {
+        $wfurlencoded = base64_encode($wf_base_url);
+    }
+
     $flowid = (int)$flow['flowid'];
     $subs = (int)$flow['subs'];
 
@@ -177,14 +190,20 @@ function sebenta_render_teacher_flow_row(array $flow, $assess)
 
     $subtitle = htmlspecialchars((string)$flow['subtitle'], ENT_QUOTES, 'UTF-8');
     $title = htmlspecialchars((string)$flow['title'], ENT_QUOTES, 'UTF-8');
-    $flowinfojs = json_encode((string)$flow['subtitle'] . ' | ' . (string)$flow['title']);
+    $flowinfojs = htmlspecialchars(
+        json_encode((string)$flow['subtitle'] . ' | ' . (string)$flow['title']),
+        ENT_QUOTES,
+        'UTF-8'
+    );
+    $authchainjs = htmlspecialchars(json_encode($authchainencoded), ENT_QUOTES, 'UTF-8');
+    $wfurljs = htmlspecialchars(json_encode($wfurlencoded), ENT_QUOTES, 'UTF-8');
 
     $meterclass = 'meter';
     $button = '<a class="disabled-buttonClass" title="finalização possível após lançamento integral e consonante com o número de submissões">finalizar</a>';
     $barwidth = 'calc(100% - 120px)';
 
     if ($assess === $subs) {
-        $button = '<button type="button" class="btn btn-info btn-lg buttonClass" data-toggle="modal" data-target="#myModal" title="finalizar o lançamento das notas" onclick="setFlowInfo(' . $flowid . ', ' . $flowinfojs . ')">finalizar</button>';
+        $button = '<button type="button" class="btn btn-info btn-lg buttonClass" data-toggle="modal" data-target="#myModal" title="finalizar o lançamento das notas" onclick="setFlowInfo(' . $flowid . ', ' . $flowinfojs . ', ' . $authchainjs . ', ' . $wfurljs . ')">finalizar</button>';
 
     } else if ($assess === 0 || $assess > $subs) {
         $meterclass .= ' red';

@@ -279,9 +279,7 @@ class block_sebenta extends block_base
                                       <div class="modal-footer" id="buttons">
                                           <button type="button" class="btn btn-secondary" id="btnCancel" data-dismiss="modal">Cancelar</button>
                                           <button type="submit" class="btn btn-primary" id="btnEndAssessDate"
-                                                        onClick="endflowmarking(this.value, \''
-                                                                              . base64_encode(checkwftoken()) . '\', \''
-                                                                              . base64_encode($wf_base_url) . '\')">
+                                                        onClick="endflowmarking(this.value, this.dataset.authChain, this.dataset.wfUrl)">
                                               Confirmar
                                           </button>
                                       </div>

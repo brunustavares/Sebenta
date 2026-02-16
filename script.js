@@ -29,9 +29,19 @@
  */
 
 // funções para alterar a data de fim da avaliação
-function setFlowInfo(value, flowInfo) {
-    document.getElementById("btnEndAssessDate").value = value;
-    document.getElementById("flow_info").textContent = flowInfo;
+function setFlowInfo(value, flowInfo, authChain, wfUrl) {
+    var endButton = document.getElementById("btnEndAssessDate");
+    var flowInfoTitle = document.getElementById("flow_info");
+
+    if (!endButton || !flowInfoTitle) {
+        return;
+    }
+    
+    endButton.value = value;
+    endButton.dataset.authChain = authChain;
+    endButton.dataset.wfUrl = wfUrl;
+
+    flowInfoTitle.textContent = flowInfo || "";
 }
 
 function endflowmarking(flowid, auth_chain, wf_url) {
@@ -48,11 +58,19 @@ function endflowmarking(flowid, auth_chain, wf_url) {
     };
     http.send(params);
 
-    // window.alert("Operação executada, esta página será recarregada!");
     document.getElementById("confirmation").innerHTML = "<h4><b>Avaliação finalizada!</b><br><br>Esta página está a ser actualizada...</h4>";
     document.getElementById("buttons").style.display = "none";
 
-    self.location.reload();
+    function clearSebentaPersistCache() {
+        Object.keys(sessionStorage).forEach(function (key) {
+            if (key.indexOf("sebenta.teacher.flows.") === 0 || key.indexOf("sebenta.student.carousel.") === 0) {
+                sessionStorage.removeItem(key);
+            }
+        });
+    }
+    
+    clearSebentaPersistCache();
+    window.location.replace(window.location.pathname + "?v=" + Date.now());
 }
 
 // saneamento do JSON

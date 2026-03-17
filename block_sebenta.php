@@ -252,7 +252,7 @@ class block_sebenta extends block_base
 
         //verifica se o utilizador está devidamente autenticado e detém as permissões correctas
         if (isloggedin()
-            && has_capability('block/sebenta:view', get_context_instance(CONTEXT_SYSTEM))) { //em caso afirmativo, constrói a interface
+            && has_capability('block/sebenta:view', \core\context\system::instance())) { //em caso afirmativo, constrói a interface
             $blkStyle = '<link href="../blocks/sebenta/style.css" rel="stylesheet" type="text/css" media="screen"/>';
             $blkScript = '<script src="../blocks/sebenta/script.js"></script>';
             $blkData = '';

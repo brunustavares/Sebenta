@@ -220,7 +220,7 @@ function initTeacherFlows() {
             .then(function (response) {
                 if (!response.ok) {
                     return response.text().then(function (txt) {
-                        throw new Error("HTTP " + response.status + ": " + (txt || "failed to fetch flows"));
+                        throw new Error("HTTP " + response.status + ": " + (txt || "falha ao carregar flows"));
                     });
                 }
                 return response.json();

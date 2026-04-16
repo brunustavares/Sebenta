@@ -90,6 +90,7 @@ function initTeacherFlows() {
         return;
     }
 
+    var listwrap = document.getElementById("wiseflow_listwrap");
     var list = document.getElementById("wiseflow_list");
     var spinner = document.getElementById("wiseflow_loading");
     var button = document.getElementById("wiseflow_load_more");
@@ -129,6 +130,7 @@ function initTeacherFlows() {
             status.textContent = "0 / 0 flows";
             if (list) {
                 list.innerHTML = "<div class='noflow'>(sem provas/flows por avaliar)</div>";
+                listwrap.style.setProperty("height", "40px", "important");
             }
             if (button) {
                 button.style.display = "none";
